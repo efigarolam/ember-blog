@@ -493,4 +493,118 @@ I will explain each concept as easy as I can. If you are lost, feel free to leav
 
 ## Ember.js Routes.
 
-Ember.js has the concept of Route, the Routes
+Ember.js has the concept of Routes, these handlers are responsible for setting the models to the controllers in order to render the according templates. Let's begin with the posts Route, you need to create the following file: *app/assets/javascripts/routes/posts_route.js.coffee*
+
+Type down the following in that file:
+
+    EmberBlog.PostsRoute = Ember.Route.extend
+      model: ->
+        EmberBlog.Post.find()
+
+Here we are setting up the model that the controller will represent. That's the same of override the `setupController` method as follows:
+
+    EmberBlog.PostsRoute = Ember.Route.extend
+      setupController: (controller) ->
+        controller.set 'content', EmberBlog.Post.find()
+
+Both ways work with the same purpose.
+
+I think it's time to mention a very interesting concept of Ember.js, it's the automatically code generation: anytime you specify a Route in the router, and then you navigate to that Route, Ember.js try to find the Route handler, the Controller, the View and the Template for that route, if any of those components is not defined, Ember.js will generate them automatically in memory for us. Eventually, I will show you this, because we're not to define a component until we have to.
+
+Currently if we open the *Developer Tools* in the `Network` section and navigate to *http://localhost/#/posts*, we will see an XHR request to our Rails API /posts resource. That's because we are setting the model on our Ember.js PostsRoute. If you go to *http://localhost/#/users* you will see that nothing happens (XHR Request).
+
+Let's make it happen!, create the next file: *app/assets/javascripts/routes/users_route.js.coffee* and write down this:
+
+    EmberBlog.UsersRoute = Ember.Route.extend
+      model: ->
+        EmberBlog.User.find()
+
+
+I think, we are ready with the Routes. Let's jump to Templates. It's time to start seeing something on the browser!
+
+## Ember.js Templates
+
+The templates are what we see on the browser. Of course we are going to use HTML, but you know that Rails sometimes use HAML or ERB templating systems, this is what help us to show the information retrieved from the server and database. This is what we called a dynamic website. We are creating a web application, it has implicit the word 'dynamic'.
+
+Ember.js has per default the technology known as Handlebars. Handlebars is a templating library which allow us to build semantic templates. In the following section I will highlight the most important about Handlebars.
+
+### Handlebars
+
+All the Handlebars expressions go between `{{` and `}}`, for instance if you want to display the title of a Post, you should write something like this:
+
+    <p>{{post.title}}</<p>
+
+Handlebars has some built-in helpers which are very helpful. I will explain one by one.
+
+**`if` block helper**
+
+It's a simple conditional block, it will show the block's content if the argument is a true value. For instance:
+
+    {{#if user.admin}}
+      <button>Create Post</button>
+    {{else}}
+      <span>You need to log in to create posts.</span>
+    {{/if}}
+
+**`unless` block helper**
+
+This helper acts as the inverse of `if` helper. It will only render the block when the argument is a *falsy* value. The falsy values are: **false, undefined, null, "" and []. 
+  
+    {{#unless post.comments}}
+      <span>No comments.</span>
+    {{/unless}}
+
+**`each` block helper**
+
+With the `each` we can iterate on a list of elements (arrays, collections, objects). To access to the elements properties, `this` must be used, for instance:
+
+    <ul>
+      {{#each posts}}
+        <li>{{this.title}}</li>
+      {{/each}}
+    </ul> 
+
+If the collection is empty, we can use else to show something different:
+
+    <ul>
+      {{#each posts}}
+        <li>{{this.title}}</li>
+      {{else}}
+        <li>Sorry, there are no posts.</li>
+      {{/each}}
+    </ul>
+
+And my favorite version of the `each` helper is the following:
+
+    <ul>
+      {{#each post in posts}}
+        <li>{{post.title}}</li>
+      {{else}}
+        <li>Sorry, there are no posts.</li>
+      {{/each}}
+    </ul>
+
+With that change, we could be clearer in our templates, and we no longer need `this`.
+
+### Creating the application template.
+
+Now that you have a little notion of Handlebars, it's time to start creating our application template, if you want to learn more about Handlebars, I recommend you to visit their [website](http://handlebarsjs.com/). I would like to begin adding CSS styles to the Ember.js app, so add the following line to the Gemfile:
+
+    gem 'anjlab-bootstrap-rails', '>= 3.0.0.0', :require => 'bootstrap-rails'
+
+Then run the following console in the terminal:
+  
+    bundle install
+
+After that rename the file *app/assets/stylesheets/application.css* to *app/assets/stylesheets/application.css.scss* and add the next line:
+
+    @import 'twitter/bootstrap'
+
+This will add the [Bootstrap 3](http://getbootstrap.com/) assets to our project. You'll need to restart the server in order to see the changes.
+
+The next step is to create the file: *app/assets/javascripts/templates/application.handlebars*, it's very important to call it with that name specifically.
+
+Add the following markup to that file:
+
+
+

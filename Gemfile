@@ -29,6 +29,8 @@ gem 'jbuilder', '~> 1.2'
 
 gem 'ember-rails'
 
+gem 'anjlab-bootstrap-rails', '>= 3.0.0.0', :require => 'bootstrap-rails'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false

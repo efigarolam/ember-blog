@@ -1,0 +1,4 @@
+{{#each post in content}}
+  <h4>{{#linkTo 'post' post}}{{post.title}}{{/linkTo}}</h4>
+  <p>{{post.content}}</p>
+{{/each}}
