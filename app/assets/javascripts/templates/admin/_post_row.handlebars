@@ -1,0 +1,19 @@
+<tr>
+  <td>
+    {{post.id}}
+  </td>
+  <td>
+    {{#linkTo 'post' post}}{{post.title}}{{/linkTo}}
+  </td>
+  <td>
+    {{fullName post.author}}
+  </td>
+  <td>
+    {{post.status}}
+  </td>
+  <td>
+    <button type="button" class="btn btn-primary btn-xs">Edit</button>
+    <button type="button" class="btn btn-success btn-xs">Publish</button>
+    <button type="button" class="btn btn-danger btn-xs">Delete</button>
+  </td>
+</tr>
