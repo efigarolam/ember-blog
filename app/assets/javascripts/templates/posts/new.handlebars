@@ -1,0 +1,14 @@
+<div class="form-group">
+  <label for="title">Title:</label>
+  {{view Ember.TextField valueBinding="content.title" name="title" class="form-control"}}
+</div>
+<div class="form-group">
+  <label for="content">Content:</label>
+  {{view Ember.TextArea valueBinding="content.content" name="content" rows="12" class="form-control"}}
+</div>
+<div class="form-group">
+  <p class="text-right">
+    <button type="button" class="btn btn-danger btn-lg" {{action "cancel"}}>Cancel</button>
+    <button type="button" class="btn btn-success btn-lg" {{action "savePost"}}>Save Post</button>
+  </p>
+</div>
