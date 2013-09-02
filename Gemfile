@@ -33,6 +33,12 @@ gem 'anjlab-bootstrap-rails', '>= 3.0.0.0', :require => 'bootstrap-rails'
 
 gem 'pry'
 
+gem 'devise'
+
+gem 'omniauth-google-oauth2'
+
+gem 'awesome_print'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false

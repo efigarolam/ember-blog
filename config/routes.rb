@@ -1,4 +1,6 @@
 EmberBlog::Application.routes.draw do
+  devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks" }
+
   root to: 'blog#init'
 
   resources :users, defaults: {format: :json} do
