@@ -4,5 +4,5 @@ EmberBlog.User = DS.Model.extend
   email: DS.attr('string')
   admin: DS.attr('boolean')
   active: DS.attr('boolean')
-  posts: DS.hasMany('EmberBlog.Post')
-  comments: DS.hasMany('EmberBlog.Comment')
+  posts: DS.hasMany('post')
+  comments: DS.hasMany('comment')

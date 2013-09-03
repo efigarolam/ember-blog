@@ -1,6 +1,6 @@
 EmberBlog.NewPostRoute = Ember.Route.extend
   model: ->
-    EmberBlog.Post.createRecord()
+    @.store.createRecord('post')
 
   renderTemplate: ->
     @.render('posts/new')

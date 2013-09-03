@@ -1,9 +1,9 @@
-EmberBlog.NewPostController = Ember.ObjectController.extend
+EmberBlog.NewPostController = EmberBlog.ObjectController.extend
   savePost: ->
-    @.set('content.author', EmberBlog.User.find(1))
+    @.set('content.author_id', @.get('currentUser.content.id'))
 
     if @.validates()
-      @.get('store').commit()
+      @.get('model').save()
     else
       @.set('error', true)
 

@@ -1,6 +1,6 @@
 EmberBlog.AdminRoute = Ember.Route.extend
   model: ->
-    EmberBlog.Post.find()
+    @.store.find('post')
 
   renderTemplate: ->
     @.render 'admin/index'

@@ -1,5 +1,5 @@
 EmberBlog.Comment = DS.Model.extend
-  user: DS.belongsTo('EmberBlog.User')
-  post: DS.belongsTo('EmberBlog.Post')
+  user: DS.belongsTo('user')
+  post: DS.belongsTo('post')
   content: DS.attr('string')
   status: DS.attr('string')
