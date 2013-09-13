@@ -4,6 +4,7 @@ EmberBlog.Post = DS.Model.extend
   author_id: DS.attr('number')
   author: DS.belongsTo('user')
   status: DS.attr('string')
-  publishedOn: DS.attr('date')
+  published_on: DS.attr('date')
   comments: DS.hasMany('comment')
+
 

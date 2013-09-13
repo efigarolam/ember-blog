@@ -1,4 +1,4 @@
-EmberBlog.Adapter = DS.RESTAdapter.extend({})
+# EmberBlog.Adapter = DS.RESTAdapter.extend({})
 
-EmberBlog.Store = DS.Store.extend
-  adapter: EmberBlog.Adapter
+# EmberBlog.Store = DS.Store.extend
+#   adapter: EmberBlog.Adapter

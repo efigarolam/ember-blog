@@ -1,5 +1,5 @@
 EmberBlog.NewPostController = EmberBlog.ObjectController.extend
-  savePost: ->
+  save: ->
     @.set('content.author_id', @.get('currentUser.content.id'))
 
     if @.validates()
