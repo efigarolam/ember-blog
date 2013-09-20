@@ -2,6 +2,9 @@ EmberBlog.NewPostRoute = Ember.Route.extend
   model: ->
     @store.createRecord('post')
 
+  enter: ->
+    @transitionTo('posts') unless @controllerFor('currentUser').get('isAdmin')
+
   renderTemplate: ->
     @render('posts/new')
     @render 'admin/go_back_button',

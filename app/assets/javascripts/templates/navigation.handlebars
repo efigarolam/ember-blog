@@ -2,7 +2,18 @@
   {{#view EmberBlog.NavOptionTab option="posts"}}
     {{#linkTo 'posts'}}Home{{/linkTo}}
   {{/view}}
-  {{#view EmberBlog.NavOptionTab option="admin"}}
-    {{#linkTo 'admin'}}Admin{{/linkTo}}
-  {{/view}}
+  {{#if currentUser}}
+    {{#if currentUser.isAdmin}}
+      {{#view EmberBlog.NavOptionTab option="admin"}}
+        {{#linkTo 'admin'}}Admin{{/linkTo}}
+      {{/view}}
+    {{/if}}
+    <li>
+      <a data-method="delete" href="/users/sign_out" rel="nofollow">Log out</a>
+    </li>
+  {{else}}
+    <li>
+      <a href="/users/auth/google_oauth2">Log in</a>
+    </li>
+  {{/if}}
 </ul>
