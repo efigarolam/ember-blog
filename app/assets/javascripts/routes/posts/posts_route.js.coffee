@@ -1,8 +1,8 @@
 EmberBlog.PostsRoute = Ember.Route.extend
   model: ->
-    @.store.find('post')
+    @store.find('post')
 
   renderTemplate: ->
-    @.render 'posts/index'
-    @.render 'navigation',
+    @render 'posts/index'
+    @render 'navigation',
       outlet: 'navigation'

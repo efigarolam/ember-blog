@@ -10,11 +10,3 @@ EmberBlog.initializer
 
       store.find('user', object.id).then (currentUser) ->
         container.lookup('controller:currentUser').set('content', currentUser)
-
-
-
-
-
-
-
-

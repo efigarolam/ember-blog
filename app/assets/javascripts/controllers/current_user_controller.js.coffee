@@ -1,6 +1,6 @@
 EmberBlog.CurrentUserController = Ember.ObjectController.extend
   isAdmin: (->
-    @.get('content.admin')
+    @get('content.admin')
   ).property('content.admin')
 
 EmberBlog.ObjectController = Ember.ObjectController.extend

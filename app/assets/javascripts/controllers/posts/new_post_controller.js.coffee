@@ -1,14 +1,13 @@
 EmberBlog.NewPostController = EmberBlog.ObjectController.extend
-  save: ->
-    @.set('content.author_id', @.get('currentUser.content.id'))
+  setStatus: (status)->
+    @set('content.status', status)
 
-    if @.validates()
-      @.get('model').save()
-    else
-      @.set('error', true)
+  setUser: ->
+    @set('content.author', @get('currentUser.content'))
 
   validates: ->
-    title = @.get 'content.title'
-    content = @.get 'content.content'
+    title = @get 'content.title'
+    content = @get 'content.content'
+    author = @get 'content.author'
 
-    not Em.isEmpty(title) and not Em.isEmpty(content)
+    not Em.isEmpty(title) and not Em.isEmpty(content) and not Em.isEmpty(author)

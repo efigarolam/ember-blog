@@ -1,8 +1,8 @@
-EmberBlog.AdminRoute = Ember.Route.extend
+EmberBlog.AdminIndexRoute = Ember.Route.extend
   model: ->
-    @.store.find('post')
+    @store.find('post')
 
   renderTemplate: ->
-    @.render 'admin/index'
-    @.render 'navigation',
+    @render 'admin/index'
+    @render 'navigation',
       outlet: 'navigation'
