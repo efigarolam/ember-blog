@@ -7,8 +7,7 @@
 
 
 
-// Version: v1.0.0-beta.1-231-g3e3061d
-// Last commit: 3e3061d (2013-09-19 23:43:50 -0700)
+// Last commit: 4d717bf (2013-09-21 21:24:59 -0700)
 
 
 (function() {
@@ -224,14 +223,6 @@ DS.JSONSerializer = Ember.Object.extend({
   },
 
   // HELPERS
-
-  typeFor: function(relationship, key, data) {
-    if (relationship.options.polymorphic) {
-      return data[key + "_type"];
-    } else {
-      return relationship.type;
-    }
-  },
 
   transformFor: function(attributeType) {
     return this.container.lookup('transform:' + attributeType);
@@ -901,7 +892,7 @@ DS.ManyArray = DS.RecordArray.extend({
   },
 
   arrangedContentDidChange: function() {
-    this.fetch();
+    Ember.run.once(this, 'fetch');
   },
 
   arrayContentWillChange: function(index, removed, added) {
@@ -2544,7 +2535,7 @@ function deserializeRecordId(store, data, key, relationship, id) {
 
 function typeFor(relationship, key, data) {
   if (relationship.options.polymorphic) {
-    return data[key + "_type"];
+    return data[key + "Type"];
   } else {
     return relationship.type;
   }
@@ -3678,6 +3669,7 @@ DS.Model = Ember.Object.extend(Ember.Evented, {
     var relationships = get(this.constructor, 'relationshipsByName');
     this.updateRecordArraysLater();
     relationships.forEach(function(name, relationship) {
+      if (this._data.links && this._data.links[name]) { return; }
       if (relationship.kind === 'hasMany') {
         this.hasManyDidChange(relationship.key);
       }
@@ -3712,6 +3704,7 @@ DS.Model = Ember.Object.extend(Ember.Evented, {
     var relationships = this._relationships;
 
     this.eachRelationship(function(name, rel) {
+      if (data.links && data.links[name]) { return; }
       if (rel.options.async) { relationships[name] = null; }
     });
 
@@ -4714,6 +4707,8 @@ var forEach = Ember.EnumerableUtils.forEach;
 
 function asyncHasMany(type, options, meta) {
   return Ember.computed(function(key, value) {
+    if (this._relationships[key]) { return this._relationships[key]; }
+
     var resolver = Ember.RSVP.defer();
 
     var relationship = buildRelationship(this, key, options, function(store, data) {
@@ -6384,6 +6379,11 @@ DS.RESTSerializer = DS.JSONSerializer.extend({
     or `findHasMany`. In particular, the primary array will become the
     list of records in the record array that kicked off the request.
 
+    If your primary array contains secondary (embedded) records of the same type,
+    you cannot place these into the primary array `posts`. Instead, place the
+    secondary items into an underscore prefixed property `_posts`, which will
+    push these items into the store and will not affect the resulting query.
+
     @method extractArray
     @param {DS.Store} store
     @param {subclass of DS.Model} type
@@ -6399,9 +6399,17 @@ DS.RESTSerializer = DS.JSONSerializer.extend({
         primaryArray;
 
     for (var prop in payload) {
-      var typeName = this.typeForRoot(prop),
+      var typeKey = prop,
+          forcedSecondary = false;
+
+      if (prop.charAt(0) === '_') {
+        forcedSecondary = true;
+        typeKey = prop.substr(1);
+      }
+
+      var typeName = this.typeForRoot(typeKey),
           type = store.modelFor(typeName),
-          isPrimary = typeName === primaryTypeName;
+          isPrimary = (!forcedSecondary && (typeName === primaryTypeName));
 
       /*jshint loopfunc:true*/
       var normalizedArray = payload[prop].map(function(hash) {
@@ -6662,7 +6670,7 @@ DS.RESTSerializer = DS.JSONSerializer.extend({
 
   /**
     You can use this method to customize how polymorphic objects are serialized.
-    By default the JSON Serializer creates the key by appending `_type` to
+    By default the JSON Serializer creates the key by appending `Type` to
     the attribute and value from the model's camelcased model name.
 
     @method serializePolymorphicType
@@ -7635,9 +7643,26 @@ DS.ActiveModelSerializer = DS.RESTSerializer.extend({
   },
 
   /**
-    Does not serialize hasMany relationships
+    Serialize has-may relationship when it is configured as embedded objects.
+
+    @method serializeHasMany
   */
-  serializeHasMany: Ember.K,
+  serializeHasMany: function(record, json, relationship) {
+    var key   = relationship.key,
+        attrs = get(this, 'attrs'),
+        embed = attrs && attrs[key] && attrs[key].embedded === 'always';
+
+    if (embed) {
+      json[this.keyForAttribute(key)] = get(record, key).map(function(relation) {
+        var data = relation.serialize(),
+            primaryKey = get(this, 'primaryKey');
+
+        data[primaryKey] = get(relation, primaryKey);
+
+        return data;
+      }, this);
+    }
+  },
 
   /**
     Underscores the JSON root keys when serializing.
