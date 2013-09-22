@@ -11,32 +11,34 @@ EmberBlog.NewPostRoute = Ember.Route.extend
       outlet: 'navigation'
 
   save: ->
-    @modelFor('newPost').save()
+    @modelFor('newPost').save().then ->
+      @controllerFor('newPost').clearErrors()
+      @redirectTo 'admin'
+    , ->
+      alert "An error has ocurred."
 
   rollBackAndRedirectTo: (route) ->
     @modelFor('newPost').rollback()
-    @redirectTo(route)
+    @redirectTo route
 
   redirectTo: (route) ->
-    @transitionTo(route)
+    @transitionTo route
 
   actions:
     prepare: ->
-      @controllerFor('newPost').setStatus('draft')
+      @controllerFor('newPost').setStatus 'draft'
       @controllerFor('newPost').setUser()
 
       if @controllerFor('newPost').validates()
         @save()
-        @controllerFor('newPost').clearErrors()
-        @redirectTo('admin')
 
     goBack: ->
       shouldConfirm =  not @controllerFor('newPost').get('isClear')
 
-      if shouldConfirm and confirm('All your changes will be lost, are you sure?')
-        @rollBackAndRedirectTo('admin')
+      if shouldConfirm and confirm 'All your changes will be lost, are you sure?'
+        @rollBackAndRedirectTo 'admin'
       else if not shouldConfirm
-        @rollBackAndRedirectTo('admin')
+        @rollBackAndRedirectTo 'admin'
 
       @controllerFor('newPost').clearErrors()
 

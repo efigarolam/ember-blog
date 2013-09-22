@@ -11,6 +11,10 @@ class PostsController < ApplicationController
     render json: Post.create(post_params)
   end
 
+  def destroy
+    render json: Post.find(params[:id]).destroy
+  end
+
   private
 
   def post_params
