@@ -13,6 +13,13 @@ EmberBlog.NewPostRoute = Ember.Route.extend
   save: ->
     @modelFor('newPost').save()
 
+  rollBackAndRedirectTo: (route) ->
+    @modelFor('newPost').rollback()
+    @redirectTo(route)
+
+  redirectTo: (route) ->
+    @transitionTo(route)
+
   actions:
     prepare: ->
       @controllerFor('newPost').setStatus('draft')
@@ -20,10 +27,17 @@ EmberBlog.NewPostRoute = Ember.Route.extend
 
       if @controllerFor('newPost').validates()
         @save()
+        @controllerFor('newPost').clearErrors()
+        @redirectTo('admin')
 
     goBack: ->
-      if confirm('All your changes will be lost, are you sure?')
-        @modelFor('newPost').rollback()
-        @transitionTo('admin')
+      shouldConfirm =  not @controllerFor('newPost').get('isClear')
+
+      if shouldConfirm and confirm('All your changes will be lost, are you sure?')
+        @rollBackAndRedirectTo('admin')
+      else if not shouldConfirm
+        @rollBackAndRedirectTo('admin')
+
+      @controllerFor('newPost').clearErrors()
 
 

@@ -1,0 +1,14 @@
+<div {{bindAttr class="isErrored::hidden :alert :alert-danger :alert-dismissable"}}>
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <strong>Hey!</strong>
+  {{#if isASingularError}}
+    It seems like you're missing this field:
+  {{else}}
+    It seems like you're missing these fields:
+  {{/if}}
+  <ul>
+    {{#each error in errors}}
+      <li><strong>{{error}}</strong></li>
+    {{/each}}
+  </ul>
+</div>
