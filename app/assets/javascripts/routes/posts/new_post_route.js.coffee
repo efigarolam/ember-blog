@@ -11,11 +11,19 @@ EmberBlog.NewPostRoute = Ember.Route.extend
       outlet: 'navigation'
 
   save: ->
+    self = @
+
     @modelFor('newPost').save().then ->
-      @controllerFor('newPost').clearErrors()
-      @redirectTo 'admin'
+      self.controllerFor('newPost').clearErrors()
+      self.redirectTo 'admin.index'
+      Em.run.later ->
+        self.controllerFor('admin.index').set('showMessage', true)
+        self.controllerFor('admin.index').set('message', 'Yay! the post has been created successfully!')
+      , 200
     , ->
-      alert "An error has ocurred."
+      self.controllerFor('admin.index').set('showMessage', true)
+      self.controllerFor('admin.index').set('isErrorMessage', true)
+      self.controllerFor('admin.index').set('message', 'Oops! something went wrong!')
 
   rollBackAndRedirectTo: (route) ->
     @modelFor('newPost').rollback()
@@ -36,9 +44,9 @@ EmberBlog.NewPostRoute = Ember.Route.extend
       shouldConfirm =  not @controllerFor('newPost').get('isClear')
 
       if shouldConfirm and confirm 'All your changes will be lost, are you sure?'
-        @rollBackAndRedirectTo 'admin'
+        @rollBackAndRedirectTo 'admin.index'
       else if not shouldConfirm
-        @rollBackAndRedirectTo 'admin'
+        @rollBackAndRedirectTo 'admin.index'
 
       @controllerFor('newPost').clearErrors()
 

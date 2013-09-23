@@ -4,6 +4,9 @@ EmberBlog.AdminIndexRoute = Ember.Route.extend
 
   enter: ->
     @transitionTo('posts') unless @controllerFor('currentUser').get('isAdmin')
+    @controllerFor('admin.index').set('showMessage', false)
+    @controllerFor('admin.index').set('isErrorMessage', false)
+    @controllerFor('admin.index').set('message', '')
 
   renderTemplate: ->
     @render 'admin/index'
@@ -15,8 +18,13 @@ EmberBlog.AdminIndexRoute = Ember.Route.extend
       if confirm 'Are you sure you want to delete the record?'
         post.deleteRecord()
 
+        self = @
+
         post.save().then ->
-          alert "The post has been deleted"
+          self.controllerFor('admin.index').set('showMessage', true)
+          self.controllerFor('admin.index').set('message', 'Yay! the post has been deleted successfully!')
         , ->
           post.rollback()
-          alert "An error has ocurred."
+          self.controllerFor('admin.index').set('showMessage', true)
+          self.controllerFor('admin.index').set('isErrorMessage', true)
+          self.controllerFor('admin.index').set('message', 'Oops! something went wrong!')

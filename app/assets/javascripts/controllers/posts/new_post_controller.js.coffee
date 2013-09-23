@@ -1,4 +1,6 @@
-EmberBlog.NewPostController = EmberBlog.ObjectController.extend
+EmberBlog.NewPostController = Ember.ObjectController.extend
+  needs: ['currentUser']
+  currentUser: Ember.computed.alias('controllers.currentUser')
   errors: []
 
   setStatus: (status)->
