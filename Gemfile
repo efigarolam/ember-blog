@@ -31,13 +31,17 @@ gem 'ember-rails'
 
 gem 'anjlab-bootstrap-rails', '>= 3.0.0.0', :require => 'bootstrap-rails'
 
-gem 'pry'
-
 gem 'devise'
 
 gem 'omniauth-google-oauth2'
 
-gem 'awesome_print'
+group :test, :development do
+  gem "konacha"
+  gem "capybara"
+  gem "sinon-rails"
+  gem 'pry'
+  gem 'awesome_print'
+end
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
