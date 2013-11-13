@@ -34,8 +34,8 @@ EmberBlog.NewPostRoute = Ember.Route.extend
 
   actions:
     prepare: ->
-      @controllerFor('newPost').setStatus 'draft'
-      @controllerFor('newPost').setUser()
+      @modelFor('newPost').set('status', 'draft')
+      @modelFor('newPost').set('author',  @controllerFor('currentUser').get('content'))
 
       if @controllerFor('newPost').validates()
         @save()

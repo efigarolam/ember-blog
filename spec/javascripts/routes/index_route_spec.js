@@ -10,5 +10,6 @@ describe('Index Route', function() {
     });
 
     mock.verify();
+    mock.restore();
   });
 });

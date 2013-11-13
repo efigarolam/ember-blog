@@ -1,4 +1,9 @@
 EmberBlog.PostsRoute = Ember.Route.extend
+  something: ''
+
+  setupController: ->
+    @set('something', 'xd')
+
   model: ->
     @store.find('post')
 

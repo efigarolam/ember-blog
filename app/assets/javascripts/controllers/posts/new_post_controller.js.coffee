@@ -3,12 +3,6 @@ EmberBlog.NewPostController = Ember.ObjectController.extend
   currentUser: Ember.computed.alias('controllers.currentUser')
   errors: []
 
-  setStatus: (status)->
-    @set('content.status', status)
-
-  setUser: ->
-    @set('content.author', @get('currentUser.content'))
-
   validates: ->
     title = @get 'content.title'
     content = @get 'content.content'
