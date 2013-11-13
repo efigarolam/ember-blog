@@ -10,14 +10,6 @@ ENV = {
   TESTING: true
 };
 
-EmberBlog.Router.reopen({
-  location: 'none'
-});
-
-// Ember.run(function() {
-//   EmberBlog.deferReadiness();
-// });
-
 window.server = sinon.fakeServer.create();
 
 window.testHelper = {
@@ -27,22 +19,8 @@ window.testHelper = {
   }
 }
 
+EmberBlog.Router.reopen({
+  location: 'none'
+});
+
 Konacha.reset = Ember.K;
-
-// beforeEach(function() {
-//   Ember.testing = true;
-
-//   Ember.run(function() {
-//     EmberBlog.advanceReadiness();
-
-//     EmberBlog.then(function() {
-//       done();
-//     });
-//   });
-// });
-
-// afterEach(function() {
-//   Ember.run(function() {
-//     EmberBlog.reset();
-//   });
-// });

@@ -1,6 +1,6 @@
 //= require spec_helper
 
-describe('New Post', function() {
+describe('Integration test for creating a New Post', function() {
   beforeEach(function() {
     admin = testHelper.lookup('store').createRecord('user')
     admin.set('id', 1);
@@ -18,32 +18,37 @@ describe('New Post', function() {
     beforeEach(function() {
       $('input[name=title]').val('New test title').change();
       $('textarea[name=content]').val('New test content').change();
+
+      createPostButton = $('.btn-success');
     });
 
     it('calls the method save on the route', function() {
       var mock = sinon.mock(testHelper.lookup('route', 'new_post'));
       mock.expects('save').once();
 
-      $('.btn-success').click();
+      createPostButton.click();
 
       mock.verify();
       mock.restore();
     });
 
     it('sets the status to draft', function() {
-      $('.btn-success').click();
+      createPostButton.click();
 
       expect(testHelper.lookup('controller', 'newPost').get('content.status')).to.equal('draft');
     });
 
     it('sets the user', function() {
-      $('.btn-success').click();
+      createPostButton.click();
 
       expect(testHelper.lookup('controller', 'newPost').get('content.author.id')).to.equal(1);
     });
   });
 
   context('canceling a post', function() {
+    beforeEach(function() {
+      cancelButton = $('.btn-danger');
+    });
     it('shows an confirm dialog if the post is dirty', function() {
       var confirmMock = sinon.mock(window);
 
@@ -52,7 +57,7 @@ describe('New Post', function() {
       $('input[name=title]').val('New test title').change();
       $('textarea[name=content]').val('New test content').change();
 
-      $('.btn-danger').click();
+      cancelButton.click();
 
       confirmMock.verify();
       confirmMock.restore();
@@ -67,7 +72,7 @@ describe('New Post', function() {
       $('input[name=title]').val('New test title').change();
       $('textarea[name=content]').val('New test content').change();
 
-      $('.btn-danger').click();
+      cancelButton.click();
 
       redirectMock.verify();
       redirectMock.restore();
@@ -78,7 +83,7 @@ describe('New Post', function() {
 
       redirectMock.expects('transitionTo').once().withExactArgs('admin.index');
 
-      $('.btn-danger').click();
+      cancelButton.click();
 
       redirectMock.verify();
       redirectMock.restore();
@@ -89,13 +94,15 @@ describe('New Post', function() {
     beforeEach(function() {
       $('input[name=title]').val('').change();
       $('textarea[name=content]').val('').change();
+
+      createPostButton = $('.btn-success');
     });
 
     it('does not call the save method', function() {
       var mock = sinon.mock(testHelper.lookup('route', 'new_post'));
       mock.expects('save').never();
 
-      $('.btn-success').click();
+      createPostButton.click();
 
       mock.verify();
       mock.restore();
@@ -104,7 +111,7 @@ describe('New Post', function() {
     it('shows that title is missing', function() {
       $('textarea[name=content]').val('New test content').change();
 
-      $('.btn-success').click();
+      createPostButton.click();
 
       expect($('div.alert ul li:first').text()).to.equal('title');
     });
@@ -112,7 +119,7 @@ describe('New Post', function() {
     it('shows that content is missing', function() {
       $('input[name=title]').val('New test title').change();
 
-      $('.btn-success').click();
+      createPostButton.click();
 
       expect($('div.alert ul li:first').text()).to.equal('content');
     });

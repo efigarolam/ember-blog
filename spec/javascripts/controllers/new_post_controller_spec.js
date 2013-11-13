@@ -4,21 +4,17 @@ describe('New Post Controller', function() {
   beforeEach(function() {
     newPostController = testHelper.lookup('controller', 'newPost');
 
-    Ember.run(function() {
-      newPostController.set('content', testHelper.lookup('store').createRecord('post'));
-      author = testHelper.lookup('store').createRecord('user');
-    });
+    newPostController.set('content', testHelper.lookup('store').createRecord('post'));
+    author = testHelper.lookup('store').createRecord('user');
   });
 
   describe('#validates', function() {
     it('is valid with all required fields', function() {
-      Ember.run(function() {
-        newPostController.set('content.title', 'Title test');
-        newPostController.set('content.content', 'Content test');
-        newPostController.set('content.author', author);
+      newPostController.set('content.title', 'Title test');
+      newPostController.set('content.content', 'Content test');
+      newPostController.set('content.author', author);
 
-        expect(newPostController.validates()).to.equal(true);
-      });
+      expect(newPostController.validates()).to.equal(true);
     });
 
     it('is invalid if title is missing', function() {
