@@ -1,6 +1,6 @@
 EmberBlog.PostsRoute = Ember.Route.extend
   model: ->
-    @store.find('post')
+    @store.find('postSearch')
 
   renderTemplate: ->
     @render 'posts/index'

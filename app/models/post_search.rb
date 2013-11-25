@@ -1,10 +1,9 @@
 class PostSearch
-  # include ActiveModel::Serializers::JSON
   attr_accessor :posts, :post_ids, :filters, :page, :per_page
 
   def initialize(attrs)
     @page = attrs[:page] || 1
-    @per_page = attrs[:per_page] || 10
+    @per_page = attrs[:per_page] || 5
     @filters = attrs[:filters] || {}
   end
 
@@ -18,16 +17,18 @@ class PostSearch
 
   def post_search
     {
-      meta:
+      post_search:
       [
         {
+          id: current_page,
           page: current_page,
-          total_pages: total_pages,
           per_page: per_page,
+          total_entries: total_entries,
+          total_pages: total_pages,
           post_ids: post_ids
         }
       ],
-      posts: serialized_posts
+      posts: results
     }
   end
 
@@ -35,12 +36,6 @@ class PostSearch
 
   def post_ids
     @post_ids ||= results.map(&:id)
-  end
-
-  def serialized_posts
-    @posts ||= results.collect do |post|
-      PostSerializer.new post
-    end
   end
 
   def search

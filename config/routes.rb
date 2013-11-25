@@ -10,4 +10,6 @@ EmberBlog::Application.routes.draw do
   resources :posts, defaults: {format: :json} do
     resources :comments, defaults: {format: :json}
   end
+
+  resources :post_search, defaults: {format: :json}
 end
