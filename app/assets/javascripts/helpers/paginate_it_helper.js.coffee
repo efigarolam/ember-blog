@@ -56,13 +56,13 @@ EmberBlog.PaginateIt = Ember.Mixin.create
     @store.find('postSearch', params).then (postSearch) ->
       self.set('content', postSearch)
 
-  changePerPage: (perPage) ->
-    @switchPerPage()
-    @set('perPage', perPage)
+  changePerPage: (newPerPage) ->
+    @switchPerPage(newPerPage)
     @changePage(1)
 
-  switchPerPage: ->
+  switchPerPage: (perPage) ->
     @set('maxPerPage', @get('perPage'))
+    @set('perPage', perPage)
 
   actions:
     goPage: (page) ->
