@@ -8,7 +8,8 @@
       <th>Actions</th>
     </tr>
   </thead>
-  {{#each post in content}}
+  {{#each post in posts}}
     {{partial 'admin/post_row'}}
   {{/each}}
 </table>
+{{ partial "helpers/pagination"}}

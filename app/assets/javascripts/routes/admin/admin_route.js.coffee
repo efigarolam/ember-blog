@@ -1,6 +1,6 @@
 EmberBlog.AdminIndexRoute = Ember.Route.extend
   model: ->
-    @store.find('post')
+    @store.find('postSearch')
 
   enter: ->
     @transitionTo('posts') unless @controllerFor('currentUser').get('isAdmin')
