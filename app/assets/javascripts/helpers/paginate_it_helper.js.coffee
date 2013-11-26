@@ -1,6 +1,10 @@
 EmberBlog.PaginateIt = Ember.Mixin.create
   maxPerPage: 20,
 
+  setup: (resource) ->
+    @set('currentPage', @get('content.content.firstObject'))
+    @set(resource, @get("currentPage.#{resource}"))
+
   perPage: (->
     @get('pagination.perPage')
   ).property('pagination')
@@ -14,6 +18,7 @@ EmberBlog.PaginateIt = Ember.Mixin.create
   ).property('pageNumber')
 
   pagination: (->
+    @setup(@get('resource'))
     @get('content.content.firstObject')
   ).property('content')
 

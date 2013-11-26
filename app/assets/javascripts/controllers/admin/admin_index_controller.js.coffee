@@ -4,12 +4,5 @@ EmberBlog.AdminIndexController = Ember.ArrayController.extend(EmberBlog.Paginate
   showMessage: false
   isErrorMessage: false
   message: ''
-
-  currentPage: (->
-    @get('content.content.firstObject')
-  ).property('content.content.firstObject')
-
-  posts: (->
-    @get('currentPage.posts')
-  ).property('currentPage')
+  resource: 'posts'
 )
