@@ -1,21 +1,25 @@
-<ul class="pagination">
-  <li {{bindAttr class="hasPrevious::disabled"}}>
-    <span {{action "goFirst"}}>&laquo;</span>
-  </li>
-  <li {{bindAttr class="hasPrevious::disabled"}}>
-    <span {{action "goPrev"}}>&larr;</span>
-  </li>
-  {{#each page in pages}}
-    {{#with page}}
-      <li {{bindAttr class="active"}}>
-        <span {{action "goPage" pageNumber}}>{{pageNumber}}</span>
-      </li>
-    {{/with}}
-  {{/each}}
-  <li {{bindAttr class="hasNext::disabled"}}>
-    <span {{action "goNext"}}>&rarr;</span>
-  </li>
-  <li {{bindAttr class="hasNext::disabled"}}>
-    <span {{action "goLast"}}>&raquo;</span>
-  </li>
-</ul>
+<div class="pagination-container">
+  <ul class="pagination">
+    <li {{bindAttr class="hasPrevious::disabled"}}>
+      <span {{action "goFirst"}}>&laquo;</span>
+    </li>
+    <li {{bindAttr class="hasPrevious::disabled"}}>
+      <span {{action "goPrev"}}>&larr;</span>
+    </li>
+    {{#each page in pages}}
+      {{#with page}}
+        <li {{bindAttr class="active"}}>
+          <span {{action "goPage" pageNumber}}>{{pageNumber}}</span>
+        </li>
+      {{/with}}
+    {{/each}}
+    <li {{bindAttr class="hasNext::disabled"}}>
+      <span {{action "goNext"}}>&rarr;</span>
+    </li>
+    <li {{bindAttr class="hasNext::disabled"}}>
+      <span {{action "goLast"}}>&raquo;</span>
+    </li>
+  </ul>
+
+  <button class='btn btn-success btn-xs change-per-page' {{action changePerPage maxPerPage}}>Show {{maxPerPage}}</button>
+</div>

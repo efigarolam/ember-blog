@@ -1,5 +1,15 @@
-.pagination {
-  li {
-    cursor: pointer;
+.pagination-container {
+  width: 410px;
+  margin: 0 auto;
+
+  .change-per-page {
+    float: right;
+    margin-top: 27px;
+  }
+
+  .pagination {
+    li {
+      cursor: pointer;
+    }
   }
 }
