@@ -20,17 +20,28 @@ EmberBlog.PaginateIt = Ember.Mixin.create
   ).property('pagination')
 
   pages: (->
-    firstPage = 1
-    firstPage = @get('pageNumber') - 3 if @get('pageNumber') - 3 > 0
+    self = @
+    pages = Em.A()
+    [@get('firstPage')..@get('lastPage')].forEach (page) ->
+      pages.pushObject {
+        pageNumber: page,
+        active: page is self.get('pageNumber')
+      }
 
-    lastPage = @get('pagination.totalPages')
-    lastPage = firstPage + 5 if firstPage + 5 < @get('pagination.totalPages')
-
-    [firstPage..lastPage]
+    pages
   ).property('@each')
 
-  isCurrent: (page) ->
-    page == @get('pageNumber')
+  firstPage: (->
+    firstPage = 1
+    firstPage = @get('pageNumber') - 5 if @get('pageNumber') - 5 > 0
+    firstPage
+  ).property('pageNumber')
+
+  lastPage: (->
+    lastPage = @get('pagination.totalPages')
+    lastPage = @get('firstPage') + 5 if @get('firstPage') + 5 < @get('pagination.totalPages')
+    lastPage
+  ).property('pagination.totalPages')
 
   changePage: (pageNumber) ->
     params = {

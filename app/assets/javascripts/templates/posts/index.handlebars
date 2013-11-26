@@ -1,3 +1,5 @@
+{{ partial "helpers/pagination" }}
+
 {{#each post in posts}}
   <h4>{{#linkTo 'post' post}}{{post.title}}{{/linkTo}}</h4>
   <p class='text-right'>
@@ -11,22 +13,5 @@
 {{/each}}
 
 <br>
-<ul class="pagination">
-  <li {{bindAttr class="hasPrevious::disabled"}}>
-    <span {{action "goFirst"}}>&laquo;</span>
-  </li>
-  <li {{bindAttr class="hasPrevious::disabled"}}>
-    <span {{action "goPrev"}}>&larr;</span>
-  </li>
-  {{#each page in pages}}
-    <li>
-      <span {{action "goPage" page}}>{{page}}</span>
-    </li>
-  {{/each}}
-  <li {{bindAttr class="hasNext::disabled"}}>
-    <span {{action "goNext"}}>&rarr;</span>
-  </li>
-  <li {{bindAttr class="hasNext::disabled"}}>
-    <span {{action "goLast"}}>&raquo;</span>
-  </li>
-</ul>
+
+{{ partial "helpers/pagination" }}
