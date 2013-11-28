@@ -3,4 +3,12 @@ class Post < ActiveRecord::Base
   has_many :comments
 
   validates_presence_of :title, :content, :author
+
+  searchable do
+    text :title, :content, :status
+
+    integer :id
+    integer :author_id
+    time    :published_on
+  end
 end

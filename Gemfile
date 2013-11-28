@@ -35,6 +35,9 @@ gem 'devise'
 
 gem 'omniauth-google-oauth2'
 
+gem 'sunspot_rails'
+gem 'sunspot_solr'
+
 group :test, :development do
   gem "konacha"
   gem "capybara"
