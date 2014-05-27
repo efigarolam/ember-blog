@@ -3,7 +3,7 @@
 Run the following commands to install all the dependencies, setup the database, insert the seeds, start the solr service and index all the seed data:
 
     bundle install
-    bundle exec db:setup
+    bundle exec rake db:setup
     bundle exec rake sunspot:solr:start
     bundle exec rake sunspot:reindex
 
